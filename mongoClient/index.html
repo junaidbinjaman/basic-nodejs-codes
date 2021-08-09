@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Hello World</h1>
+  <p id="userName"></p>
+  <div class="container">
+    <div class="row">
+      <input type="text" class="form-control" id="user" />
+      <button class="btn btn-primary" id="addUser">
+        Add User
+      </button>
+    </div>
+  </div>
+  <script>
+    fetch("http://localhost:3000/user/3")
+      .then((res) => res.json())
+      .then((data) => {
+        document.getElementById("userName").innerText = data.name;
+      });
+
+    // POST data to server
+    const btnAddUser = document.getElementById('addUser')
+    btnAddUser.addEventListener('click', () => {
+      const name = document.getElementById('user').value
+      const user = { name }
+      // POST
+      fetch('http://localhost:3000/addUser', {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+          'Content-type': "application/json; charset=UTF-8"
+        }
+      })
+        .then(res => res.json())
+        .then(data => updateUser(data))
+    })
+
+    function updateUser(user) {
+      document.getElementById("userName").innerText = user.name
+    }
+
+  </script>
+</body>
+
+</html>
